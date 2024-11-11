@@ -1,0 +1,57 @@
+echo "Test X: (shortest distance, number of paths)"
+echo "TEST 1: (Shortest distance, number of paths)" >> all_test_results.txt
+./greedy_robot 1 3 4 4 3 >> all_test_results.txt
+
+echo "TEST 2: (Already there)" >> all_test_results.txt
+./greedy_robot 2 1 1 1 1 >> all_test_results.txt
+
+echo "TEST 3: (NP, 0)" >> all_test_results.txt
+./greedy_robot 1 1 1 9 9 >> all_test_results.txt
+
+echo "TEST 4: (Basic North-East Path)" >> all_test_results.txt
+./greedy_robot 2 0 0 3 3 >> all_test_results.txt
+
+echo "TEST 5: (Straight Line North)" >> all_test_results.txt
+./greedy_robot 2 4 4 6 5 >> all_test_results.txt
+
+echo "TEST 6: (Straight Line East)" >> all_test_results.txt
+./greedy_robot 3 3 3 8 3 >> all_test_results.txt
+
+echo "TEST 7: (Straight Line South)" >> all_test_results.txt
+./greedy_robot 1 5 5 5 2 >> all_test_results.txt
+
+echo "TEST 8: (Straight Line West)" >> all_test_results.txt
+./greedy_robot 1 6 6 2 6 >> all_test_results.txt
+
+echo "TEST 9: (Diagonal Path with max_distance 1)" >> all_test_results.txt
+./greedy_robot 1 0 0 2 2 >> all_test_results.txt
+
+echo "TEST 10: (Large Grid Distance with Limited Steps)" >> all_test_results.txt
+./greedy_robot 3 1 1 9 9 >> all_test_results.txt
+
+echo "TEST 11: (Vertical with Restricted Max Distance)" >> all_test_results.txt
+./greedy_robot 1 0 0 0 4 >> all_test_results.txt
+
+echo "TEST 12: (Horizontal with Restricted Max Distance)" >> all_test_results.txt
+./greedy_robot 2 0 0 6 0 >> all_test_results.txt
+
+echo "TEST 13: (Impossible Path due to max_distance Restriction)" >> all_test_results.txt
+./greedy_robot 1 0 0 0 7 >> all_test_results.txt
+
+echo "TEST 14: (Short Distance in Complex Grid)" >> all_test_results.txt
+./greedy_robot 2 4 4 6 5 >> all_test_results.txt
+
+echo "TEST 15: (Medium Distance with max_distance 1)" >> all_test_results.txt
+./greedy_robot 1 0 0 3 4 >> all_test_results.txt
+
+echo "TEST 16: (Equal X, Different Y)" >> all_test_results.txt
+./greedy_robot 2 4 2 4 5 >> all_test_results.txt
+
+echo "TEST 17: (Equal Y, Different X)" >> all_test_results.txt
+./greedy_robot 2 3 7 5 7 >> all_test_results.txt
+
+echo "TEST 18: (Close Distance with max_distance 1)" >> all_test_results.txt
+./greedy_robot 1 2 3 3 4 >> all_test_results.txt
+
+echo "TEST 19: (Edge Case on Boundary)" >> all_test_results.txt
+./greedy_robot 1 0 0 1 1 >> all_test_results.txt
