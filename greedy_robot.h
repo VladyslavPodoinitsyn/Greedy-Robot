@@ -1,31 +1,36 @@
 #ifndef GREEDY_ROBOT_H_
 #define GREEDY_ROBOT_H_
-
 #include <iostream>
 #include <vector>
 using namespace std;
 
 class GreedyRobot
 {
-private:
-    int current_x_;      // Current x-coordinate of the robot
-    int current_y_;      // Current y-coordinate of the robot
-    int goal_x_;         // x-coordinate of the treasure
-    int goal_y_;         // y-coordinate of the treasure
-    int max_distance_;   // Maximum distance the robot can move in a single direction
-    vector<string> paths_; // Stores the found paths
+    private:
+    
+    int current_x_; // Current x-coordinate of the robot
+    int current_y_; // Current y-coordinate of the robot
+    int goal_x_;    // x-coordinate of the treasure (goal)
+    int goal_y_;    // y-coordinate of the treasure (goal)
+    int max_dist_;  // Maximum allowed distance per move in any direction
+    vector<string> paths_; // Stores all found unique paths to the treasure
 
-    // Helper function for exploring all potential paths
-    void explorePaths(int x, int y, int move_count, char last_move, int north_count, int south_count, int east_count, int west_count, string path_so_far);
+    // Recursive helper function to explore all possible paths to the goal
+    void FindHelper(int xr, int yr, int move_count, char last_m, int con_s, int con_n, int con_w, int con_e, string path);
 
-public:
-    // Constructors
+    public:
+    
+    // Default constructor, initializes all member variables to default values
     GreedyRobot();
-    GreedyRobot(int max_distance, int current_x, int current_y, int goal_x, int goal_y);
+    
+    // Parameterized constructor to initialize the robot's position, goal, and max move distance
+    GreedyRobot(int max_dist_, int xr, int yr, int xt, int yt);
 
-    // Public Methods
-    void FindPaths(); // Starts the process of finding all possible paths
-    void DisplayPaths() const; // Outputs all the paths found
+    // Initiates the pathfinding process by calling the recursive helper function
+    void FindPaths(); 
+    
+    // Prints all the found paths to the console, followed by the total number of paths
+    void PrintPaths() const;
 };
 
 #endif
