@@ -6,89 +6,92 @@
 
 using namespace std;
 
+// Default constructor to initialize robot and goal coordinates, and max distance
 GreedyRobot::GreedyRobot()
 {
-    // Initialize all member variables to default values
-    current_x_ = 0;
-    current_y_ = 0;
-    goal_x_ = 0;
-    goal_y_ = 0;
-    max_distance_ = 0;
+    max_dist_ = 0;       // Maximum allowed move distance (per direction)
+    current_x_ = 0;      // Initial x-coordinate of the robot
+    current_y_ = 0;      // Initial y-coordinate of the robot
+    goal_x_ = 0;         // x-coordinate of the treasure (goal)
+    goal_y_ = 0;         // y-coordinate of the treasure (goal)  
 }
 
-GreedyRobot::GreedyRobot(int max_distance, int current_x, int current_y, int goal_x, int goal_y)
+// Parameterized constructor to set the robot's starting position, goal, and max move distance
+GreedyRobot::GreedyRobot(int max_dist, int xr, int yr, int xt, int yt)
 {
-    // Initialize member variables with provided values
-    this->current_x_ = current_x;
-    this->current_y_ = current_y;
-    this->goal_x_ = goal_x;
-    this->goal_y_ = goal_y;
-    this->max_distance_ = max_distance;
+    max_dist_ = max_dist;  // Set max allowed move distance
+    current_x_ = xr;       // Set robot's starting x-coordinate
+    current_y_ = yr;       // Set robot's starting y-coordinate
+    goal_x_ = xt;          // Set goal (treasure) x-coordinate
+    goal_y_ = yt;          // Set goal (treasure) y-coordinate
 }
 
+// Function to initiate the pathfinding process
 void GreedyRobot::FindPaths()
 {
-    // Begin the pathfinding process starting from the initial robot position
-    startPathfinding(current_x_, current_y_, 0, '\0', 0, 0, 0, 0, "");
+    // Call the recursive helper function to begin pathfinding from the robot's starting point
+    FindHelper(current_x_, current_y_, 0, '\0', 0, 0, 0, 0, ""); 
 }
 
-void GreedyRobot::startPathfinding(int current_x, int current_y, int move_count, char last_move, int north_count, int south_count, int east_count, int west_count, string current_path)
+// Recursive helper function to explore all valid paths from the robot's current position to the goal
+void GreedyRobot::FindHelper(int xr, int yr, int move_count, char last_m, int con_n, int con_s, int con_e, int con_w, string path) 
 {
-    // Base case: if the robot reaches the treasure, store the path
-    if (current_x == goal_x_ && current_y == goal_y_)
+    // Base case: if the robot reaches the goal, add the current path to the list of paths
+    if (xr == goal_x_ && yr == goal_y_) 
     {
-        if (!current_path.empty()) // Only add non-empty paths
+        if (!path.empty()) // Only add non-empty paths
         {
-            paths_.emplace_back(current_path);  // Save the current valid path
+            paths_.push_back(path); // Store the found path
         }
         return;
     }
 
-    // Try moving North if the treasure is to the north of the robot
-    if (current_y < goal_y_)
+    // Move South if robot is below the goal and max allowed moves in this direction is not exceeded
+    if (yr > goal_y_) 
     {
-        if (north_count < max_distance_)  // Ensure we do not exceed max distance in a direction
+        if (con_s < max_dist_)
         {
-            startPathfinding(current_x, current_y + 1, move_count + 1, 'N', north_count + 1, 0, 0, 0, current_path + "N");
+            FindHelper(xr, yr - 1, move_count + 1, 'S', 0, con_s + 1, 0, 0, path + "S");
         }
     }
 
-    // Try moving South if the treasure is to the south of the robot
-    if (current_y > goal_y_)
+    // Move North if robot is above the goal and max allowed moves in this direction is not exceeded
+    if (yr < goal_y_) 
     {
-        if (south_count < max_distance_)  // Ensure we do not exceed max distance in a direction
+        if (con_n < max_dist_)
         {
-            startPathfinding(current_x, current_y - 1, move_count + 1, 'S', 0, south_count + 1, 0, 0, current_path + "S");
+            FindHelper(xr, yr + 1, move_count + 1, 'N', con_n + 1, 0, 0, 0, path + "N");
         }
     }
 
-    // Try moving West if the treasure is to the west of the robot
-    if (current_x > goal_x_)
+    // Move West if robot is to the right of the goal and max allowed moves in this direction is not exceeded
+    if (xr > goal_x_) 
     {
-        if (west_count < max_distance_)  // Ensure we do not exceed max distance in a direction
+        if (con_w < max_dist_)
         {
-            startPathfinding(current_x - 1, current_y, move_count + 1, 'W', 0, 0, 0, west_count + 1, current_path + "W");
+            FindHelper(xr - 1, yr, move_count + 1, 'W', 0, 0, 0, con_w + 1, path + "W");
         }
     }
 
-    // Try moving East if the treasure is to the east of the robot
-    if (current_x < goal_x_)
+    // Move East if robot is to the left of the goal and max allowed moves in this direction is not exceeded
+    if (xr < goal_x_) 
     {
-        if (east_count < max_distance_)  // Ensure we do not exceed max distance in a direction
+        if (con_e < max_dist_)
         {
-            startPathfinding(current_x + 1, current_y, move_count + 1, 'E', 0, 0, east_count + 1, 0, current_path + "E");
+            FindHelper(xr + 1, yr, move_count + 1, 'E', 0, 0, con_e + 1, 0, path + "E");
         }
-    }
+    }    
 }
 
-void GreedyRobot::DisplayPaths() const
+// Function to print all found paths and the total number of paths
+void GreedyRobot::PrintPaths() const
 {
-    // Output each valid path found by the robot
-    for (const auto& path : paths_)
+    // Print each path stored in paths_
+    for (int i = 0; i < paths_.size(); i++)
     {
-        cout << path << endl;
+        cout << paths_[i] << endl; // Output each path
     }
 
-    // Output the total number of paths found
-    cout << "Total number of paths found: " << paths_.size() << endl;
+    // Print the total number of paths found
+    cout << "Number of paths: " << paths_.size() << endl;
 }
