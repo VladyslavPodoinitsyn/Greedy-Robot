@@ -5,21 +5,21 @@ using namespace std;
 
 int main(int argument_count, char* argument_vector[]) {
 
-    // Convert command-line arguments to integers
-    int max_distance = atoi(argument_vector[1]);  // Maximum allowed steps in any direction
-    int robot_x = atoi(argument_vector[2]);  // Robot's starting X-coordinate
-    int robot_y = atoi(argument_vector[3]);  // Robot's starting Y-coordinate
-    int treasure_x = atoi(argument_vector[4]);  // Treasure's X-coordinate
-    int treasure_y = atoi(argument_vector[5]);  // Treasure's Y-coordinate
+    // Parse input arguments and assign to corresponding variables
+    int max_dist_ = atoi(argument_vector[1]);  // Maximum allowed move distance per direction
+    int xr = atoi(argument_vector[2]);         // Robot's starting x-coordinate
+    int yr = atoi(argument_vector[3]);         // Robot's starting y-coordinate
+    int xt = atoi(argument_vector[4]);         // Treasure (goal) x-coordinate
+    int yt = atoi(argument_vector[5]);         // Treasure (goal) y-coordinate
 
-    // Create a GreedyRobot object using the input values
-    GreedyRobot robot(max_distance, robot_x, robot_y, treasure_x, treasure_y);
+    // Create an instance of the GreedyRobot with the provided arguments
+    GreedyRobot robot(max_dist_, xr, yr, xt, yt);
 
-    // Start finding paths from the robot's current position to the treasure
-    robot.FindPaths();  // This will initiate the pathfinding process
+    // Start the pathfinding process by calling FindPaths method
+    robot.FindPaths(); // This will recursively find all possible paths to the treasure
 
-    // Output all the paths found by the robot
-    robot.PrintPaths();  // Prints the valid paths along with the number of paths found
+    // Output the found paths and the total number of paths
+    robot.PrintPaths(); // Print the paths and the total number of unique paths
 
-    return 0;
+    return 0; // Exit the program successfully
 }
